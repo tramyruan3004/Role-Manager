@@ -13,7 +13,7 @@ using System.Windows.Forms;
 namespace ExperimentTreeViewV2.Classes
 {
     [Serializable]
-    internal class RoleTreeNode:TreeNode, ISerializable
+    public class RoleTreeNode:TreeNode, ISerializable
     {
         private RoleTreeNode _parentRoleTreeNode; // RoleTreeNode type object which describes the "Parent"
         private Role _role; // To hold the Role object which describes one role information

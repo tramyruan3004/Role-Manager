@@ -34,3 +34,9 @@ C:\Users\85802\Downloads\ExperimentTreeViewV2\ExperimentTreeViewV2\ExperimentTre
 C:\Users\85802\Downloads\ExperimentTreeViewV2\ExperimentTreeViewV2\ExperimentTreeViewV2\obj\Debug\netcoreapp3.1\ExperimentTreeViewV2.dll
 C:\Users\85802\Downloads\ExperimentTreeViewV2\ExperimentTreeViewV2\ExperimentTreeViewV2\obj\Debug\netcoreapp3.1\ExperimentTreeViewV2.pdb
 C:\Users\85802\Downloads\ExperimentTreeViewV2\ExperimentTreeViewV2\ExperimentTreeViewV2\obj\Debug\netcoreapp3.1\ExperimentTreeViewV2.genruntimeconfig.cache
+C:\Users\85802\Downloads\ExperimentTreeViewV2\ExperimentTreeViewV2\ExperimentTreeViewV2\obj\Debug\netcoreapp3.1\ExperimentTreeViewV2.Company_Projects_Simulator.resources
+C:\Users\85802\Downloads\ExperimentTreeViewV2\ExperimentTreeViewV2\ExperimentTreeViewV2\obj\Debug\netcoreapp3.1\ExperimentTreeViewV2.FormManageEmployee.resources
+C:\Users\85802\Downloads\ExperimentTreeViewV2\ExperimentTreeViewV2\ExperimentTreeViewV2\obj\Debug\netcoreapp3.1\ExperimentTreeViewV2.FormManageProjects.resources
+C:\Users\85802\Downloads\ExperimentTreeViewV2\ExperimentTreeViewV2\ExperimentTreeViewV2\obj\Debug\netcoreapp3.1\ExperimentTreeViewV2.FormManageRoles.resources
+C:\Users\85802\Downloads\ExperimentTreeViewV2\ExperimentTreeViewV2\ExperimentTreeViewV2\obj\Debug\netcoreapp3.1\ExperimentTreeViewV2.Properties.Resources.resources
+C:\Users\85802\Downloads\ExperimentTreeViewV2\ExperimentTreeViewV2\ExperimentTreeViewV2\obj\Debug\netcoreapp3.1\ExperimentTreeViewV2.FormAddRole.resources

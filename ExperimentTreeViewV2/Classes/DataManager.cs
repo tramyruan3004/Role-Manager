@@ -27,6 +27,11 @@ namespace ExperimentTreeViewV2.Classes
             _filePath = System.IO.Path.GetDirectoryName(Application.ExecutablePath) + "\\Data\\data1.dat";
             _roleTreeStructure = new RoleTreeNode(new Role("ROOT"));
         }
+        public RoleTreeNode GenerateRootNode()
+        {
+            _roleTreeStructure = new RoleTreeNode(new Role("ROOT"));
+            return _roleTreeStructure;
+        }
         public RoleTreeNode GenerateFakeTreeStructure()
         {
             _roleTreeStructure = new RoleTreeNode(new Role("ROOT"));

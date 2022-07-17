@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace ExperimentTreeViewV2.Classes
 {
     [Serializable]
-    internal class Role
+    public class Role
     {
         private string _uuid; // Role UUID
         private string _name; // Role Name

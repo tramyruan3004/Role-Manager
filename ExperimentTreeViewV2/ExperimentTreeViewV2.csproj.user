@@ -7,7 +7,22 @@
     <Compile Update="Form2.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="FormAddRole.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormManageEmployee.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormManageProjects.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="FormUpdateRole.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Company_Projects_Simulator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormManageRoles.cs">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>

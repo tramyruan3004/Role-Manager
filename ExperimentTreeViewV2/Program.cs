@@ -17,7 +17,7 @@ namespace ExperimentTreeViewV2
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form2());
+            Application.Run(new Company_Projects_Simulator());
         }
     }
 }

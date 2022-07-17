@@ -38,24 +38,27 @@
             // treeViewRole
             // 
             this.treeViewRole.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.treeViewRole.Location = new System.Drawing.Point(510, 65);
+            this.treeViewRole.Location = new System.Drawing.Point(729, 108);
+            this.treeViewRole.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.treeViewRole.Name = "treeViewRole";
-            this.treeViewRole.Size = new System.Drawing.Size(697, 519);
+            this.treeViewRole.Size = new System.Drawing.Size(994, 862);
             this.treeViewRole.TabIndex = 7;
             // 
             // textboxAnalyze
             // 
-            this.textboxAnalyze.Location = new System.Drawing.Point(12, 197);
+            this.textboxAnalyze.Location = new System.Drawing.Point(17, 328);
+            this.textboxAnalyze.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.textboxAnalyze.Multiline = true;
             this.textboxAnalyze.Name = "textboxAnalyze";
-            this.textboxAnalyze.Size = new System.Drawing.Size(472, 387);
+            this.textboxAnalyze.Size = new System.Drawing.Size(673, 642);
             this.textboxAnalyze.TabIndex = 6;
             // 
             // buttonSaveToFile
             // 
-            this.buttonSaveToFile.Location = new System.Drawing.Point(12, 127);
+            this.buttonSaveToFile.Location = new System.Drawing.Point(17, 212);
+            this.buttonSaveToFile.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonSaveToFile.Name = "buttonSaveToFile";
-            this.buttonSaveToFile.Size = new System.Drawing.Size(222, 46);
+            this.buttonSaveToFile.Size = new System.Drawing.Size(317, 77);
             this.buttonSaveToFile.TabIndex = 5;
             this.buttonSaveToFile.Text = "Save tree structure data to binary file";
             this.buttonSaveToFile.UseVisualStyleBackColor = true;
@@ -63,9 +66,10 @@
             // 
             // buttonSetupTreeStructure
             // 
-            this.buttonSetupTreeStructure.Location = new System.Drawing.Point(12, 65);
+            this.buttonSetupTreeStructure.Location = new System.Drawing.Point(17, 108);
+            this.buttonSetupTreeStructure.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonSetupTreeStructure.Name = "buttonSetupTreeStructure";
-            this.buttonSetupTreeStructure.Size = new System.Drawing.Size(222, 46);
+            this.buttonSetupTreeStructure.Size = new System.Drawing.Size(317, 77);
             this.buttonSetupTreeStructure.TabIndex = 4;
             this.buttonSetupTreeStructure.Text = "Setup fake tree structure data";
             this.buttonSetupTreeStructure.UseVisualStyleBackColor = true;
@@ -73,9 +77,10 @@
             // 
             // buttonLoadFromFile
             // 
-            this.buttonLoadFromFile.Location = new System.Drawing.Point(262, 127);
+            this.buttonLoadFromFile.Location = new System.Drawing.Point(374, 212);
+            this.buttonLoadFromFile.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonLoadFromFile.Name = "buttonLoadFromFile";
-            this.buttonLoadFromFile.Size = new System.Drawing.Size(222, 46);
+            this.buttonLoadFromFile.Size = new System.Drawing.Size(317, 77);
             this.buttonLoadFromFile.TabIndex = 8;
             this.buttonLoadFromFile.Text = "Load tree structure data from binary file";
             this.buttonLoadFromFile.UseVisualStyleBackColor = true;
@@ -83,14 +88,15 @@
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1232, 648);
+            this.ClientSize = new System.Drawing.Size(1760, 1080);
             this.Controls.Add(this.buttonLoadFromFile);
             this.Controls.Add(this.treeViewRole);
             this.Controls.Add(this.textboxAnalyze);
             this.Controls.Add(this.buttonSaveToFile);
             this.Controls.Add(this.buttonSetupTreeStructure);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
