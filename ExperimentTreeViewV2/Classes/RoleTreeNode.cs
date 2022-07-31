@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -35,14 +36,11 @@ namespace ExperimentTreeViewV2.Classes
         } // End of constructor
         //End of two constructors
 
-
-
         public RoleTreeNode ParentRoleTreeNode
         {
             get { return _parentRoleTreeNode; }
             set { _parentRoleTreeNode = value; }
         }
-
         public Role Role { 
             get { return _role; } 
             set { _role = value; }
@@ -52,7 +50,6 @@ namespace ExperimentTreeViewV2.Classes
             set { _children = value; } 
         }
 
-
         public void AddChildRoleTreeNode(RoleTreeNode roleNode)
         {
             roleNode.ParentRoleTreeNode = this;
@@ -60,6 +57,21 @@ namespace ExperimentTreeViewV2.Classes
             this.Nodes.Add(roleNode);
         } // End of AddChildRoleTreeNode method
 
+        public bool QualifiedProjLeader()
+        {
+            if (this.ChildRoleTreeNodes.Count > 0)//Note: This if block may not be necessary at all. Though the logic works.
+            {
+                int i = 0;
+                for (i = 0; i < this.ChildRoleTreeNodes.Count; i++)
+                {
+                    if (this.ChildRoleTreeNodes[i].ChildRoleTreeNodes.Count > 0)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return false;
+        }
         /* When you work on File IO operations, TreeNode class is [not serializable]                      */
         /* As a result the following three methods were defined to support the                              */
         /* reconstruction of all the TreeNode objects within each RoleTreeNode type objects     */
@@ -91,7 +103,6 @@ namespace ExperimentTreeViewV2.Classes
                 bf.Serialize(stream, this);
                 stream.Close();
 
-                MessageBox.Show("Data is added to file");
             }
             catch (Exception ex)
             {
@@ -170,5 +181,108 @@ namespace ExperimentTreeViewV2.Classes
                 }
             }
         }//End of SearchByUUID method
+        public void SearchByName(string name, ref List<RoleTreeNode> foundNodes)
+        {
+            if (this.ChildRoleTreeNodes.Count > 0)//Note: This if block may not be necessary at all. Though the logic works.
+            {
+                int i = 0;
+                for (i = 0; i < this.ChildRoleTreeNodes.Count; i++)
+                {
+                    if (this.ChildRoleTreeNodes[i].Role.Name == name)
+                    {  //Base case (Where the method code stops calling itself, 
+                       //perform action and finally exit). This avoids infinite loop
+
+                        foundNodes.Add(this.ChildRoleTreeNodes[i]);
+                    }
+                    else
+                    { //Recursive case (where the method calls itself)
+                      //Each DepartmentNode type object has SearchDeleteById method
+                        this.ChildRoleTreeNodes[i].SearchByName(name, ref foundNodes);
+                    }
+                }
+            }
+        }//End of SearchByUUID method
+        public void DeleteRoleNode(string uuid)
+        {
+            if (this.ChildRoleTreeNodes.Count > 0)
+            {
+                int i = 0;
+                for (i = 0; i < this.ChildRoleTreeNodes.Count; i++)
+                {
+                    if (this.ChildRoleTreeNodes[i].Role.UUID == uuid)
+                    {
+                        this.ChildRoleTreeNodes.RemoveAt(i); //Recall that, ChildNodes is a List. It has built-in RemoveAt method
+                        this.Nodes.RemoveAt(i);
+                        return;
+                    }
+                    else
+                    {
+                        this.ChildRoleTreeNodes[i].DeleteRoleNode(uuid);
+                    }
+                }
+            }
+        }
+        public void TakenRoles(List<string> takenRoleUUIDList)
+        {
+            if (this.ChildRoleTreeNodes.Count > 0)//Note: This if block may not be necessary at all. Though the logic works.
+            {
+                int i = 0;
+                for (i = 0; i < this.ChildRoleTreeNodes.Count; i++)
+                {
+                    if (this.ChildRoleTreeNodes[i] != null)
+                    {
+                        if (takenRoleUUIDList.Contains(this.ChildRoleTreeNodes[i].Role.UUID))
+                        {  //Base case (Where the method code stops calling itself, 
+                           //perform action and finally exit). This avoids infinite loop
+                            this.ChildRoleTreeNodes[i].Role.TakenRole = true;
+                        }
+                        this.ChildRoleTreeNodes[i].TakenRoles(takenRoleUUIDList);
+                    }
+                }
+            }
+        }//End of TakenRoles method
+        public void ExtractCompleteTeam(List<List<string>> completeRoleTeamUUIDList)
+        {
+            if (this.ChildRoleTreeNodes.Count > 0)//Note: This if block may not be necessary at all. Though the logic works.
+            {
+                int i = 0;
+                for (i = 0; i < this.ChildRoleTreeNodes.Count; i++)
+                {
+                    if (this.ChildRoleTreeNodes[i].Role.ProjectLeader != true)
+                    {
+                        this.ChildRoleTreeNodes[i].ExtractCompleteTeam(completeRoleTeamUUIDList);
+                    }
+                    else
+                    {
+                        List<string> oneCompleteRoleTeamUUID = new List<string>();
+                        oneCompleteRoleTeamUUID.Add(this.ChildRoleTreeNodes[i].Role.UUID);
+                        foreach (RoleTreeNode childNode in this.ChildRoleTreeNodes[i].ChildRoleTreeNodes)
+                        {
+                            oneCompleteRoleTeamUUID.Add(childNode.Role.UUID);
+                        }
+                        completeRoleTeamUUIDList.Add(oneCompleteRoleTeamUUID);
+                    }
+                }
+            }
+        }
+        public void AllRolesAvailable(List<RoleTreeNode> rolesList)
+        {
+            if (this.ChildRoleTreeNodes.Count > 0)//Note: This if block may not be necessary at all. Though the logic works.
+            {
+                int i = 0;
+                for (i = 0; i < this.ChildRoleTreeNodes.Count; i++)
+                {
+                    if (this.ChildRoleTreeNodes[i] != null)
+                    {
+                        if (!rolesList.Contains(this.ChildRoleTreeNodes[i]))
+                        {
+                            rolesList.Add(this.ChildRoleTreeNodes[i]);
+                        }
+                        this.ChildRoleTreeNodes[i].AllRolesAvailable(rolesList);
+                    }
+                }
+            }
+        }
+
     }//end of RoleTreeNode class
 }//end of namespace

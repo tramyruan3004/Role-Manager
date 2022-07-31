@@ -1,19 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Compile Update="Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Form2.cs">
+    <Compile Update="FormAddEmployee.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="FormAddRole.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormAddSecondaryRole.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="FormManageEmployee.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="FormManageProjects.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormSwapEmployee.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormUpdateEmployee.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="FormUpdateRole.cs">

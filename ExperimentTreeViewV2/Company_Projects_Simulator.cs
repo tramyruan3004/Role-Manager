@@ -25,6 +25,8 @@ namespace ExperimentTreeViewV2
         {
             if (f2 != null)
             {
+                f2.Close();
+                f2 = new FormManageEmployee();
                 if (f1 != null)
                 {
                     f1.Hide();
@@ -46,6 +48,8 @@ namespace ExperimentTreeViewV2
         {
             if (f3 != null)
             {
+                f3.Close();
+                f3 = new FormManageProjects();
                 if (f2 != null)
                 {
                     f2.Hide();
@@ -67,6 +71,8 @@ namespace ExperimentTreeViewV2
         {
             if (f1 != null)
             {
+                f1.Close();
+                f1 = new FormManageRoles();
                 if (f2 != null)
                 {
                     f2.Hide();

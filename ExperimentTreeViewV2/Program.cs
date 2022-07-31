@@ -18,6 +18,8 @@ namespace ExperimentTreeViewV2
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Company_Projects_Simulator());
+            //Application.Run(new FormManageProjects());
+
         }
     }
 }

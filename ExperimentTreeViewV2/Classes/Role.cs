@@ -10,6 +10,8 @@ namespace ExperimentTreeViewV2.Classes
     {
         private string _uuid; // Role UUID
         private string _name; // Role Name
+        private bool _projectLeader;
+        private bool _takenRole;
         private RoleTreeNode _container; // References the RoleTreeNode object that contains the role
         //two constructors
         public Role()
@@ -19,6 +21,8 @@ namespace ExperimentTreeViewV2.Classes
         {
             _uuid = General.GenerateUUID();
             _name = name;
+            _projectLeader = false;
+            _takenRole = false;
         } // end of constructor
         //end of two constructors
         public RoleTreeNode Container
@@ -39,7 +43,16 @@ namespace ExperimentTreeViewV2.Classes
   
             }
         } // End of Name property
-
+        public bool ProjectLeader
+        {
+            get { return _projectLeader; }
+            set { _projectLeader = value; }
+        }
+        public bool TakenRole
+        {
+            get { return _takenRole; }
+            set { _takenRole = value; }
+        }
         public void EditRole(string name)
         {
             _name = name;

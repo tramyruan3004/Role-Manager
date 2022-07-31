@@ -23,9 +23,6 @@ C:\Users\85802\Downloads\ExperimentTreeViewV2\ExperimentTreeViewV2\ExperimentTre
 C:\Users\85802\Downloads\ExperimentTreeViewV2\ExperimentTreeViewV2\ExperimentTreeViewV2\bin\Debug\netcoreapp3.1\ExperimentTreeViewV2.dll
 C:\Users\85802\Downloads\ExperimentTreeViewV2\ExperimentTreeViewV2\ExperimentTreeViewV2\bin\Debug\netcoreapp3.1\ExperimentTreeViewV2.pdb
 C:\Users\85802\Downloads\ExperimentTreeViewV2\ExperimentTreeViewV2\ExperimentTreeViewV2\obj\Debug\netcoreapp3.1\ExperimentTreeViewV2.csproj.AssemblyReference.cache
-C:\Users\85802\Downloads\ExperimentTreeViewV2\ExperimentTreeViewV2\ExperimentTreeViewV2\obj\Debug\netcoreapp3.1\ExperimentTreeViewV2.Form1.resources
-C:\Users\85802\Downloads\ExperimentTreeViewV2\ExperimentTreeViewV2\ExperimentTreeViewV2\obj\Debug\netcoreapp3.1\ExperimentTreeViewV2.Form2.resources
-C:\Users\85802\Downloads\ExperimentTreeViewV2\ExperimentTreeViewV2\ExperimentTreeViewV2\obj\Debug\netcoreapp3.1\ExperimentTreeViewV2.FormUpdateRole.resources
 C:\Users\85802\Downloads\ExperimentTreeViewV2\ExperimentTreeViewV2\ExperimentTreeViewV2\obj\Debug\netcoreapp3.1\ExperimentTreeViewV2.csproj.GenerateResource.cache
 C:\Users\85802\Downloads\ExperimentTreeViewV2\ExperimentTreeViewV2\ExperimentTreeViewV2\obj\Debug\netcoreapp3.1\ExperimentTreeViewV2.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\85802\Downloads\ExperimentTreeViewV2\ExperimentTreeViewV2\ExperimentTreeViewV2\obj\Debug\netcoreapp3.1\ExperimentTreeViewV2.AssemblyInfoInputs.cache
@@ -40,3 +37,8 @@ C:\Users\85802\Downloads\ExperimentTreeViewV2\ExperimentTreeViewV2\ExperimentTre
 C:\Users\85802\Downloads\ExperimentTreeViewV2\ExperimentTreeViewV2\ExperimentTreeViewV2\obj\Debug\netcoreapp3.1\ExperimentTreeViewV2.FormManageRoles.resources
 C:\Users\85802\Downloads\ExperimentTreeViewV2\ExperimentTreeViewV2\ExperimentTreeViewV2\obj\Debug\netcoreapp3.1\ExperimentTreeViewV2.Properties.Resources.resources
 C:\Users\85802\Downloads\ExperimentTreeViewV2\ExperimentTreeViewV2\ExperimentTreeViewV2\obj\Debug\netcoreapp3.1\ExperimentTreeViewV2.FormAddRole.resources
+C:\Users\85802\Downloads\ExperimentTreeViewV2\ExperimentTreeViewV2\ExperimentTreeViewV2\obj\Debug\netcoreapp3.1\ExperimentTreeViewV2.FormUpdateRole.resources
+C:\Users\85802\Downloads\ExperimentTreeViewV2\ExperimentTreeViewV2\ExperimentTreeViewV2\obj\Debug\netcoreapp3.1\ExperimentTreeViewV2.FormAddEmployee.resources
+C:\Users\85802\Downloads\ExperimentTreeViewV2\ExperimentTreeViewV2\ExperimentTreeViewV2\obj\Debug\netcoreapp3.1\ExperimentTreeViewV2.FormUpdateEmployee.resources
+C:\Users\85802\Downloads\ExperimentTreeViewV2\ExperimentTreeViewV2\ExperimentTreeViewV2\obj\Debug\netcoreapp3.1\ExperimentTreeViewV2.FormSwapEmployee.resources
+C:\Users\85802\Downloads\ExperimentTreeViewV2\ExperimentTreeViewV2\ExperimentTreeViewV2\obj\Debug\netcoreapp3.1\ExperimentTreeViewV2.FormAddSecondaryRole.resources

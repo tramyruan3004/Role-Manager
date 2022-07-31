@@ -68,6 +68,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
+            this.label4.Enabled = false;
             this.label4.Location = new System.Drawing.Point(198, 234);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(99, 25);
@@ -77,6 +78,7 @@
             // checkBoxProjectLeader
             // 
             this.checkBoxProjectLeader.AutoSize = true;
+            this.checkBoxProjectLeader.Enabled = false;
             this.checkBoxProjectLeader.Location = new System.Drawing.Point(59, 179);
             this.checkBoxProjectLeader.Name = "checkBoxProjectLeader";
             this.checkBoxProjectLeader.Size = new System.Drawing.Size(211, 29);
@@ -121,6 +123,7 @@
             // 
             // textboxRoleName
             // 
+            this.textboxRoleName.Enabled = false;
             this.textboxRoleName.Location = new System.Drawing.Point(162, 124);
             this.textboxRoleName.Name = "textboxRoleName";
             this.textboxRoleName.Size = new System.Drawing.Size(273, 31);

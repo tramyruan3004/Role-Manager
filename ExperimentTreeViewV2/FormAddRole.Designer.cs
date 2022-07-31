@@ -36,12 +36,14 @@
             this.textboxNodeName = new System.Windows.Forms.TextBox();
             this.buttonAdd = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // checkBoxProjectLeader
             // 
             this.checkBoxProjectLeader.AutoSize = true;
-            this.checkBoxProjectLeader.Location = new System.Drawing.Point(88, 183);
+            this.checkBoxProjectLeader.Enabled = false;
+            this.checkBoxProjectLeader.Location = new System.Drawing.Point(88, 204);
             this.checkBoxProjectLeader.Name = "checkBoxProjectLeader";
             this.checkBoxProjectLeader.Size = new System.Drawing.Size(196, 29);
             this.checkBoxProjectLeader.TabIndex = 16;
@@ -96,7 +98,7 @@
             this.buttonAdd.BackColor = System.Drawing.Color.MediumPurple;
             this.buttonAdd.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.buttonAdd.ForeColor = System.Drawing.SystemColors.InactiveBorder;
-            this.buttonAdd.Location = new System.Drawing.Point(88, 243);
+            this.buttonAdd.Location = new System.Drawing.Point(88, 249);
             this.buttonAdd.Name = "buttonAdd";
             this.buttonAdd.Size = new System.Drawing.Size(171, 34);
             this.buttonAdd.TabIndex = 17;
@@ -109,7 +111,7 @@
             this.buttonCancel.BackColor = System.Drawing.Color.Crimson;
             this.buttonCancel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.buttonCancel.ForeColor = System.Drawing.SystemColors.InactiveBorder;
-            this.buttonCancel.Location = new System.Drawing.Point(293, 243);
+            this.buttonCancel.Location = new System.Drawing.Point(293, 249);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(171, 34);
             this.buttonCancel.TabIndex = 18;
@@ -117,11 +119,22 @@
             this.buttonCancel.UseVisualStyleBackColor = false;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
+            this.label4.Location = new System.Drawing.Point(83, 173);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(264, 25);
+            this.label4.TabIndex = 19;
+            this.label4.Text = "Edit role to assign project leader";
+            // 
             // FormAddRole
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(557, 330);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonAdd);
             this.Controls.Add(this.checkBoxProjectLeader);
@@ -147,5 +160,6 @@
         private System.Windows.Forms.TextBox textboxNodeName;
         private System.Windows.Forms.Button buttonAdd;
         private System.Windows.Forms.Button buttonCancel;
+        private System.Windows.Forms.Label label4;
     }
 }

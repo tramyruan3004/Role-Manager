@@ -14,11 +14,11 @@ namespace ExperimentTreeViewV2
 
     {
         private RoleTreeNode _pNode;
-        private string nodeName;
+        private string _nodeName = "";
         public string NodeName
         {
-            get { return nodeName; }
-            set { nodeName = value; }
+            get { return _nodeName; }
+            set { _nodeName = value; }
         }
 
         public FormAddRole(RoleTreeNode pNode)
@@ -26,17 +26,19 @@ namespace ExperimentTreeViewV2
             InitializeComponent();
             this._pNode = pNode;
             this.textboxParentRole.Text = this._pNode.Role.Name;
+            this.checkBoxProjectLeader.Checked = false;
         }
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            NodeName = this.textboxNodeName.Text;
-            MessageBox.Show("Role has been added!");
+            this.NodeName = this.textboxNodeName.Text;
             this.Close();
+            MessageBox.Show("Role has been added!");
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
         {
             this.Close();
         }
+
     }
 }
