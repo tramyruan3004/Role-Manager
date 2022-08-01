@@ -95,8 +95,10 @@ namespace ExperimentTreeViewV2
                 }
                 else
                 {
+                    Debug.Write(_selectedNode.Employee.Project.Name);
                     this.textBoxProject.Text = _selectedNode.Employee.Project.Name;
                 }
+
 
             }
             //Debug.Write(_selectedNode);
@@ -134,6 +136,7 @@ namespace ExperimentTreeViewV2
                 {
                     /**** A sample code which is frequently used to get a parent form work with a child form ****/
                     Employee employee = _selectedNode.Employee;
+                    double parentSalary = _selectedNode.ParentEmployeeTreeNode.Employee.Salary;
                     string reportingOffName;
                     if (_selectedNode.Employee.Name == "ROOT")
                     {
@@ -144,7 +147,7 @@ namespace ExperimentTreeViewV2
                         reportingOffName = _selectedNode.ParentEmployeeTreeNode.Employee.Name;
                     }
                     //fur stands for form update role (ran out of naming ideas)
-                    FormUpdateEmployee fur = new FormUpdateEmployee(employee.UUID, employee.Name, employee.Salary, reportingOffName, employee.PriRole, employee.SecRole, employee.DummyStat);
+                    FormUpdateEmployee fur = new FormUpdateEmployee(parentSalary, employee.UUID, employee.Name, employee.Salary, reportingOffName, employee.PriRole, employee.SecRole, employee.DummyStat);
                     fur.comboBoxRoles.Enabled = false;
                     fur.Text = "Edit_Employee_Details";
                     fur.ModifyItemCallback = new FormUpdateEmployee.ModifyItemDelegate(this.ModifyItemCallbackFn);
@@ -180,6 +183,10 @@ namespace ExperimentTreeViewV2
                         _roleDataManager.RoleTreeStructure.SearchByName(fAddEmployee.NodeRoleName, ref resultRoleNode);
 
                         EmployeeTreeNode pNewNode = new EmployeeTreeNode(new Employee(fAddEmployee.NodeName, resultRoleNode[0].Role, fAddEmployee.NodeSalary, fAddEmployee.NodeDummyStat));
+                        if (_selectedNode.Employee.Project != null)
+                        {
+                            pNewNode.Employee.Project = _selectedNode.Employee.Project;
+                        }
                         if (!_selectedNode.ChildrenEmployeeNodes.Contains(pNewNode))
                         {
                             _selectedNode.AddChildrenEmployeeNode(pNewNode);
@@ -198,29 +205,66 @@ namespace ExperimentTreeViewV2
                             _dataManager.SaveEmployeeData();
                             FormSwapEmployee fsf = new FormSwapEmployee(_selectedNode, _dataManager);
                             fsf.ShowDialog();
-                        }
-                        else
-                        {
-                            textboxConsole.Text = "no";
+                            buttonLoad.PerformClick();
                         }
                     }
                     else
                     {
-                        var confirmResult = MessageBox.Show("Are you sure to delete this employee?",
-                                     "Confirm Delete Role",
-                                     MessageBoxButtons.OKCancel);
-                        if (confirmResult == DialogResult.OK)
+                        if (_selectedNode.Employee.Project == null)
                         {
-                            if (_selectedNode.Employee.SecRole != null)
+                            var confirmResult = MessageBox.Show("Are you sure to delete this employee?",
+                                        "Confirm Delete Employee",
+                                        MessageBoxButtons.OKCancel);
+                            if (confirmResult == DialogResult.OK)
                             {
-                                List<EmployeeTreeNode> resultAnotherNode = new List<EmployeeTreeNode>();
-                                _dataManager.EmployeeTreeStructure.SearchRemainNodeByNodeName(_selectedNode.Employee.Name, _selectedNode.Employee.UUID, ref resultAnotherNode);
-                                resultAnotherNode[0].Employee.SecRole = null;
+                                if (_selectedNode.Employee.SecRole != null)
+                                {
+                                    List<EmployeeTreeNode> resultAnotherNode = new List<EmployeeTreeNode>();
+                                    _dataManager.EmployeeTreeStructure.SearchRemainNodeByNodeName(_selectedNode.Employee.Name, _selectedNode.Employee.UUID, ref resultAnotherNode);
+                                    resultAnotherNode[0].Employee.SecRole = null;
+                                }
+                                _dataManager.EmployeeTreeStructure.DeleteEmployeeNode(_selectedNode.Employee.UUID);
+                                _dataManager.SaveEmployeeData();
+                                buttonLoad.PerformClick();
                             }
-                            _dataManager.EmployeeTreeStructure.DeleteEmployeeNode(_selectedNode.Employee.UUID);
+                        }
+                        else
+                        {
+                            List<string> remainRoleUUIDList = new List<string>();
+                            remainRoleUUIDList.Add(_selectedNode.ParentEmployeeTreeNode.Employee.PriRole.UUID);
+                            foreach (EmployeeTreeNode remainChildNode in _selectedNode.ParentEmployeeTreeNode.ChildrenEmployeeNodes)
+                            {
+                                if (remainChildNode.Employee.UUID != _selectedNode.Employee.UUID)
+                                {
+                                    remainRoleUUIDList.Add(remainChildNode.Employee.PriRole.UUID);
+                                }
+                            }
+                            _roleDataManager.RoleTreeStructure.ExtractCompleteTeam(_completeRoleTeamUUIDList);
+                            if(_selectedNode.QualifiedCompleteTeam(_completeRoleTeamUUIDList, remainRoleUUIDList))
+                            {
+                                var confirmResult = MessageBox.Show("Are you sure to delete this employee?",
+                                        "Confirm Delete Employee",
+                                        MessageBoxButtons.OKCancel);
+                                if (confirmResult == DialogResult.OK)
+                                {
+                                    if (_selectedNode.Employee.SecRole != null)
+                                    {
+                                        List<EmployeeTreeNode> resultAnotherNode = new List<EmployeeTreeNode>();
+                                        _dataManager.EmployeeTreeStructure.SearchRemainNodeByNodeName(_selectedNode.Employee.Name, _selectedNode.Employee.UUID, ref resultAnotherNode);
+                                        resultAnotherNode[0].Employee.SecRole = null;
+                                    }
+                                    _dataManager.EmployeeTreeStructure.DeleteEmployeeNode(_selectedNode.Employee.UUID);
+                                    _dataManager.SaveEmployeeData();
+                                    buttonLoad.PerformClick();
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show("The employee can only be removed if there are no subordinates, no assigned projects or if after removal will still remain a full team!"
+                            , "Error!", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
+                            }
                         }
                     }
-                    buttonLoad.PerformClick();
                 }
                 if (item.Text == "Swap employee")
                 {
@@ -353,6 +397,10 @@ namespace ExperimentTreeViewV2
                     this._removeMenuItem.Enabled = true;
                     this._swapMenuItem.Enabled = true;
                 }
+            }
+            if (_selectedNode.ParentEmployeeTreeNode.Employee.PriRole.ProjectLeader == true)
+            {
+                this._addMenuItem.Enabled = false;
             }
         }
 

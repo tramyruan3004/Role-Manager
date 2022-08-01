@@ -58,13 +58,13 @@ namespace ExperimentTreeViewV2
                 }
                 this.textBoxSalary.Text = _replacingNewNode.Employee.Salary.ToString();
                 this.textBoxEmployeeRole.Text = _replacingNewNode.Employee.PriRole.Name;
-                if (_replacingNewNode.Employee.ProjectList.Count == 0)
+                if (_replacingNewNode.Employee.Project == null)
                 {
                     this.textBoxProject.Text = "No project";
                 }
                 else
                 {
-                    this.textBoxProject.Text = "tbc";
+                    this.textBoxProject.Text = _replacingNewNode.Employee.Project.Name;
                 }
             }
             //Debug.Write(_selectedNode);

@@ -130,11 +130,6 @@ namespace ExperimentTreeViewV2
                     if (confirmResult == DialogResult.OK)
                     {
                         _dataManager.RoleTreeStructure.DeleteRoleNode(_selectedNode.Role.UUID);
-                        textboxConsole.Text = "yes";
-                    }
-                    else
-                    {
-                        textboxConsole.Text = "no";
                     }
                 }
             }

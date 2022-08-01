@@ -54,6 +54,7 @@ namespace ExperimentTreeViewV2.Classes
             get { return _employee; }
             set { _employee = value; }
         }
+
         public List<EmployeeTreeNode> ChildrenEmployeeNodes
         {
             get { return _childrenEmployeeNodes; }
@@ -74,6 +75,7 @@ namespace ExperimentTreeViewV2.Classes
                         this.ChildrenEmployeeNodes[i].Employee.UUID = _replacingNewNode.Employee.UUID;
                         this.ChildrenEmployeeNodes[i].Employee.SecRole = _replacingNewNode.Employee.SecRole;
                         this.ChildrenEmployeeNodes[i].Employee.DummyStat = _replacingNewNode.Employee.DummyStat;
+
                     }
                     else if (this.ChildrenEmployeeNodes[i].Employee.UUID == _replacingNewNode.Employee.UUID)
                     {
@@ -83,6 +85,7 @@ namespace ExperimentTreeViewV2.Classes
                         this.ChildrenEmployeeNodes[i].Employee.UUID = _selectNode.Employee.UUID;
                         this.ChildrenEmployeeNodes[i].Employee.SecRole = _selectNode.Employee.SecRole;
                         this.ChildrenEmployeeNodes[i].Employee.DummyStat = _selectNode.Employee.DummyStat;
+
                     }
                     this.ChildrenEmployeeNodes[i].ParentEmployeeTreeNode = this;
                     this.ChildrenEmployeeNodes[i].SwappingNodes(_selectNode, _replacingNewNode);
@@ -218,6 +221,14 @@ namespace ExperimentTreeViewV2.Classes
                         this.ChildrenEmployeeNodes[i].SearchByUUID(uuid, ref foundNodes);
                     }
                 }
+            }
+        }//End of SearchByUUID method
+        public void CostToSelectedNode(ref double cost)
+        {
+            if (this.ParentEmployeeTreeNode.Employee.Name != "ROOT")
+            {
+                cost += this.ParentEmployeeTreeNode.Employee.Salary;
+                this.ParentEmployeeTreeNode.CostToSelectedNode(ref cost);
             }
         }//End of SearchByUUID method
         public void ExtractTakenRoleUUID(List<string> takenRoleUUIDList)
@@ -359,5 +370,42 @@ namespace ExperimentTreeViewV2.Classes
                 }
             }
         }//End of SearchRemainNodeByNodeName method
+        public bool QualifiedCompleteTeam (List<List<string>> completeRoleTeamUUIDList, List<string> remainRoleUUIDList)
+        {
+            foreach (List<string> oneCompleteRoleTeamUUID in completeRoleTeamUUIDList)
+            {
+                if (remainRoleUUIDList[0] == oneCompleteRoleTeamUUID[0])
+                {
+                    List<string> oneCompleteChildRoleTeamUUID = oneCompleteRoleTeamUUID.GetRange(1, oneCompleteRoleTeamUUID.Count - 1);
+                    List<string> childNodeUUIDList = new List<string>();
+                    foreach (string childNode in remainRoleUUIDList)
+                    {
+                        childNodeUUIDList.Add(childNode);
+                    }
+                    bool qualifiedCompleteTeam = oneCompleteChildRoleTeamUUID.Intersect(childNodeUUIDList).Count() == oneCompleteChildRoleTeamUUID.Count();
+                    if (qualifiedCompleteTeam)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        public void TurnNormal()
+        {
+            if (this.ChildrenEmployeeNodes.Count > 0)//Note: This if block may not be necessary at all. Though the logic works.
+            {
+                int i = 0;
+                for (i = 0; i < this.ChildrenEmployeeNodes.Count; i++)
+                {
+                    if (this.ChildrenEmployeeNodes[i] != null)
+                    {  //Base case (Where the method code stops calling itself, 
+                       //perform action and finally exit). This avoids infinite loop
+                        this.ChildrenEmployeeNodes[i].BackColor = System.Drawing.Color.Transparent;
+                        this.ChildrenEmployeeNodes[i].TurnNormal();
+                    }
+                }
+            }
+        }//End of SearchEmployeeNameByRoleUUID method
     }
 }

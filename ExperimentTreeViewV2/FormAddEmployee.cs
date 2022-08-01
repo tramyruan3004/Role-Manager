@@ -57,7 +57,7 @@ namespace ExperimentTreeViewV2
         }
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            if (this.textboxNodeName.Text != "" && comboBoxRoles.SelectedItem != null)
+            if (this.textboxNodeName.Text != "" && comboBoxRoles.SelectedItem != null && this.textboxNodeName.Text != "ROOT")
             {
                 this.NodeName = this.textboxNodeName.Text;
                 this.NodeSalary = Convert.ToDouble(this.textboxNodeSalary.Text);
@@ -67,9 +67,9 @@ namespace ExperimentTreeViewV2
             }
             else
             {
-                if (this.textboxNodeName.Text == "")
+                if (this.textboxNodeName.Text == "" || this.textboxNodeName.Text != "ROOT")
                 {
-                    MessageBox.Show("Please enter Employee Name!");
+                    MessageBox.Show("Please enter a valid Employee Name!");
                 }
                 else if (comboBoxRoles.SelectedItem == null)
                 {
@@ -109,6 +109,10 @@ namespace ExperimentTreeViewV2
             buttonAdd.Enabled = true;
             try
             {
+                if (double.Parse(textboxNodeSalary.Text) > this._pNode.Employee.Salary && this._pNode.Employee.Name != "ROOT")
+                {
+                    buttonAdd.Enabled = false;
+                }
                 this.NodeSalary = double.Parse(textboxNodeSalary.Text);
             }
             catch

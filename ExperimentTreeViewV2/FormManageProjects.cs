@@ -141,12 +141,21 @@ namespace ExperimentTreeViewV2
                 MessageBox.Show(ex.Message);
             }
         }
-
+        private void ExtractAvailableCompleteTeam(ref List<List<EmployeeTreeNode>> completeTeamList)
+        {
+            for (int i = 0; i < completeTeamList.Count; i++)
+            {
+                if (completeTeamList[i][0].Employee.Project != null)
+                {
+                    completeTeamList.Remove(completeTeamList[i]);
+                }
+            }
+        }
         private void buttonSearchForTeamAdd_Click(object sender, EventArgs e)
         {
-            treeViewEmployee.Nodes.Clear();
-            treeViewEmployee.Nodes.Add(_employeeDataManager.EmployeeTreeStructure);
-            treeViewEmployee.ExpandAll();
+            _roleDataManager.RoleTreeStructure.ExtractCompleteTeam(_completeRoleTeamUUIDList);
+            ExtractAvailableCompleteTeam(ref _completeTeamList);
+            _employeeDataManager.EmployeeTreeStructure.TurnNormal();
 
             comboBoxTeamLeaderAdd.Items.Clear();
             double inputProjectRevenue;
@@ -155,6 +164,7 @@ namespace ExperimentTreeViewV2
             foreach (List<EmployeeTreeNode> oneCompleteTeam in _completeTeamList)
             {
                 double cost = 0;
+                oneCompleteTeam[0].CostToSelectedNode(ref cost);
                 foreach (EmployeeTreeNode employee in oneCompleteTeam)
                 {
                     cost += employee.Employee.Salary;
@@ -165,7 +175,6 @@ namespace ExperimentTreeViewV2
             {
                 if (inputProjectRevenue <= teamSalaryList[i])
                 {
-
                     comboBoxTeamLeaderAdd.Items.Add(new { Text = _completeTeamList[i][0].Text, Value = _completeTeamList[i][0].Employee.UUID });
                     List<EmployeeTreeNode> resultNodes = new List<EmployeeTreeNode>();
                     _employeeDataManager.EmployeeTreeStructure.SearchByUUID(_completeTeamList[i][0].Employee.UUID, ref resultNodes);
@@ -190,17 +199,10 @@ namespace ExperimentTreeViewV2
             _projectList.Add(newProj); //display on the project form
 
             //add to project property of the resultNodes
-            if (!resultNodes[0].Employee.ProjectList.Contains(newProj))
-            {
-                resultNodes[0].Employee.AddProject(newProj);
-            }
+            resultNodes[0].Employee.Project = newProj;
             foreach (EmployeeTreeNode emp in resultNodes[0].ChildrenEmployeeNodes)
             {
-                Debug.WriteLine(emp);
-                if (!emp.Employee.ProjectList.Contains(newProj))
-                {
-                    emp.Employee.AddProject(newProj);
-                }
+                emp.Employee.Project = newProj;
             }
 
             ListViewItem listViewProjItem = new ListViewItem(newProj.UUID);
@@ -218,7 +220,9 @@ namespace ExperimentTreeViewV2
             this.textBoxRevenueAdd.Clear();
             this.comboBoxTeamLeaderAdd.Text = null;
             this.comboBoxTeamLeaderAdd.Items.Clear();
-            foreach(Project proj in _projectList)
+            _employeeDataManager.EmployeeTreeStructure.TurnNormal();
+
+            foreach (Project proj in _projectList)
             {
                 Debug.WriteLine(proj.Name, proj.ProjectLeader.Name);
 
@@ -236,13 +240,19 @@ namespace ExperimentTreeViewV2
 
         private void buttonSearchForTeamEdit_Click(object sender, EventArgs e)
         {
+            _roleDataManager.RoleTreeStructure.ExtractCompleteTeam(_completeRoleTeamUUIDList);
+            ExtractAvailableCompleteTeam(ref _completeTeamList);
+
+            _employeeDataManager.EmployeeTreeStructure.TurnNormal();
+
             comboBoxTeamLeaderEdit.Items.Clear();
             double inputProjectRevenue;
-            inputProjectRevenue = Convert.ToDouble(this.textBoxRevenueEdit.Text);
+            inputProjectRevenue = Convert.ToDouble(this.textBoxRevenueAdd.Text);
             List<double> teamSalaryList = new List<double>();
             foreach (List<EmployeeTreeNode> oneCompleteTeam in _completeTeamList)
             {
                 double cost = 0;
+                oneCompleteTeam[0].CostToSelectedNode(ref cost);
                 foreach (EmployeeTreeNode employee in oneCompleteTeam)
                 {
                     cost += employee.Employee.Salary;
@@ -282,39 +292,23 @@ namespace ExperimentTreeViewV2
                     }
                     else
                     {
+                        //delete proj in prev projLeader
                         _selectedProjLeaderUUID = comboBoxTeamLeaderEdit.SelectedItem.GetType().GetProperty("Value").GetValue(comboBoxTeamLeaderEdit.SelectedItem, null).ToString(); //get the new leader
-                        for (int i = 0; i < resultPrevLeaderNodes[0].Employee.ProjectList.Count; i++)
-                        {
-                            if (resultPrevLeaderNodes[0].Employee.ProjectList[i].UUID == project.UUID)
-                            {
-                                resultPrevLeaderNodes[0].Employee.ProjectList.Remove(resultPrevLeaderNodes[0].Employee.ProjectList[i]);
-                            }
-                        }
+                        resultPrevLeaderNodes[0].Employee.Project = null;
                         foreach (EmployeeTreeNode childNode in resultPrevLeaderNodes[0].ChildrenEmployeeNodes)
                         {
-                            for (int i = 0; i < childNode.Employee.ProjectList.Count; i++)
-                            {
-                                if (childNode.Employee.ProjectList[i].UUID == project.UUID)
-                                {
-                                    childNode.Employee.ProjectList.Remove(childNode.Employee.ProjectList[i]);
-                                }
-                            }
+                            childNode.Employee.Project = null;
                         }
+                        //add proj to new projLeader
                         List<EmployeeTreeNode> resultNodes = new List<EmployeeTreeNode>();
                         _employeeDataManager.EmployeeTreeStructure.SearchByUUID(_selectedProjLeaderUUID, ref resultNodes);
                         project.ProjectLeader = resultNodes[0].Employee; //replace the projLeader of the proj back to projectList in Proj form itself
 
                         //modify in the leader and subordinates nodes abt project data
-                        if (!resultNodes[0].Employee.ProjectList.Contains(project))
-                        {
-                            resultNodes[0].Employee.AddProject(project);
-                        }
+                        resultNodes[0].Employee.Project = project;
                         foreach (EmployeeTreeNode childNode in resultNodes[0].ChildrenEmployeeNodes)
                         {
-                            if (!childNode.Employee.ProjectList.Contains(project))
-                            {
-                                childNode.Employee.AddProject(project);
-                            }
+                            childNode.Employee.Project = project;
                         }
                     }
                     this.textboxConsole.Text = "Project edited:\nName:" + project.Name + "\nRevenue:" + project.Revenue.ToString() + "\nTeam Leader:" + project.ProjectLeader.Name;
@@ -334,9 +328,13 @@ namespace ExperimentTreeViewV2
             //reset the form
             comboBoxMode.SelectedItem = "View";
             this.textBoxProjNameEdit.Clear();
+            this.textBoxProjUUIDEdit.Clear();
             this.textBoxRevenueEdit.Clear();
             this.comboBoxTeamLeaderEdit.Text = null;
             this.comboBoxTeamLeaderEdit.Items.Clear();
+            _employeeDataManager.EmployeeTreeStructure.TurnNormal();
+
+
         }
 
         private void listViewProj_ItemSelectionChanged(Object sender, ListViewItemSelectionChangedEventArgs e)
@@ -361,52 +359,45 @@ namespace ExperimentTreeViewV2
 
         private void buttonDeleteProjEdit_Click(object sender, EventArgs e)
         {
-            string _selectedProjItem = listViewProj.SelectedItems[0].Text;
-            for(int j = 0; j < _projectList.Count; j++)
+            var confirmResult = MessageBox.Show("Are you sure to delete this project?",
+                                        "Confirm Delete Project",
+                                        MessageBoxButtons.OKCancel);
+            if (confirmResult == DialogResult.OK)
             {
-                if (_projectList[j].UUID == _selectedProjItem)
+                string _selectedProjItem = listViewProj.SelectedItems[0].Text;
+                for (int j = 0; j < _projectList.Count; j++)
                 {
-                    List<EmployeeTreeNode> resultNodes = new List<EmployeeTreeNode>();
-                    _employeeDataManager.EmployeeTreeStructure.SearchByUUID(_projectList[j].ProjectLeader.UUID, ref resultNodes);
-                    for (int i = 0; i < resultNodes[0].Employee.ProjectList.Count; i++)
+                    if (_projectList[j].UUID == _selectedProjItem)
                     {
-                        if (resultNodes[0].Employee.ProjectList[i].UUID == _projectList[j].UUID)
+                        List<EmployeeTreeNode> resultNodes = new List<EmployeeTreeNode>();
+                        _employeeDataManager.EmployeeTreeStructure.SearchByUUID(_projectList[j].ProjectLeader.UUID, ref resultNodes);
+                        resultNodes[0].Employee.Project = null;
+                        foreach (EmployeeTreeNode childNode in resultNodes[0].ChildrenEmployeeNodes)
                         {
-                            resultNodes[0].Employee.ProjectList.Remove(resultNodes[0].Employee.ProjectList[i]);
+                            childNode.Employee.Project = null;
                         }
+                        this.textboxConsole.Text = "Project deleted:\nName:" + _projectList[j].Name + "\nRevenue:" + _projectList[j].Revenue.ToString() + "\nTeam Leader:" + _projectList[j].ProjectLeader.Name;
+                        _projectList.Remove(_projectList[j]);//delete project in the projectList in Project form itself
                     }
-                    foreach (EmployeeTreeNode childNode in resultNodes[0].ChildrenEmployeeNodes)
-                    {
-                        for (int i = 0; i < childNode.Employee.ProjectList.Count; i++)
-                        {
-                            if (childNode.Employee.ProjectList[i].UUID == _projectList[j].UUID)
-                            {
-                                childNode.Employee.ProjectList.Remove(childNode.Employee.ProjectList[i]);
-                            }
-                        }
-                    }
-                    this.textboxConsole.Text = "Project deleted:\nName:" + _projectList[j].Name + "\nRevenue:" + _projectList[j].Revenue.ToString() + "\nTeam Leader:" + _projectList[j].ProjectLeader.Name;
-                    _projectList.Remove(_projectList[j]);//delete project in the projectList in Project form itself
-
                 }
-            }
-            //Update the listView control
-            listViewProj.Items.Clear();
-            foreach (Project newProj in _projectList)
-            {
-                ListViewItem listViewProjItem = new ListViewItem(newProj.UUID);
-                listViewProjItem.SubItems.Add(newProj.Name);
-                listViewProjItem.SubItems.Add(newProj.Revenue.ToString());
-                listViewProjItem.SubItems.Add(newProj.ProjectLeader.Name);
-                listViewProj.Items.Add(listViewProjItem);
-            }
+                //Update the listView control
+                listViewProj.Items.Clear();
+                foreach (Project newProj in _projectList)
+                {
+                    ListViewItem listViewProjItem = new ListViewItem(newProj.UUID);
+                    listViewProjItem.SubItems.Add(newProj.Name);
+                    listViewProjItem.SubItems.Add(newProj.Revenue.ToString());
+                    listViewProjItem.SubItems.Add(newProj.ProjectLeader.Name);
+                    listViewProj.Items.Add(listViewProjItem);
+                }
 
-            //reset the form
-            comboBoxMode.SelectedItem = "View";
-            this.textBoxProjNameEdit.Clear();
-            this.textBoxRevenueEdit.Clear();
-            this.comboBoxTeamLeaderEdit.Text = null;
-            this.comboBoxTeamLeaderEdit.Items.Clear();
+                //reset the form
+                comboBoxMode.SelectedItem = "View";
+                this.textBoxProjNameEdit.Clear();
+                this.textBoxRevenueEdit.Clear();
+                this.comboBoxTeamLeaderEdit.Text = null;
+                this.comboBoxTeamLeaderEdit.Items.Clear();
+            }
         }
     }
 }

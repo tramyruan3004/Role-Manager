@@ -15,12 +15,13 @@ namespace ExperimentTreeViewV2
     {
         private string _nodeRoleName;
         private string _oriEmployeeName;
+        private double _parentSalary;
         private Employee _employee;
         private string _reportingOffName;
         private List<RoleTreeNode> _roleNodesList;
         public delegate void ModifyItemDelegate(string uuid, string oriEmployeeName, string employeeName, double salary, string reportingOffName, Role priRole, Role secRole, bool dummyStat);
         public ModifyItemDelegate ModifyItemCallback;
-        public FormUpdateEmployee(string uuid, string employeeName, double salary, string reportingOffName, Role priRole, Role secRole, bool dummyStat)
+        public FormUpdateEmployee(double parentSalary, string uuid, string employeeName, double salary, string reportingOffName, Role priRole, Role secRole, bool dummyStat)
         {
             InitializeComponent();
             this._employee = new Employee();
@@ -32,6 +33,7 @@ namespace ExperimentTreeViewV2
             this._employee.Salary = salary;
             this._employee.DummyStat = dummyStat;
             this._oriEmployeeName = employeeName;
+            this._parentSalary = parentSalary;
 
         }
     public FormUpdateEmployee(string uuid, string employeeName, double salary, string reportingOffName, Role priRole, Role secRole, List<RoleTreeNode> roleNodeList, bool dummyStat)
@@ -101,6 +103,7 @@ namespace ExperimentTreeViewV2
             string oriName = _oriEmployeeName;
             string name = textboxNodeName.Text.Trim();
             string uuid = textBoxUUID.Text.Trim();
+
             double salary = Convert.ToDouble(textboxNodeSalary.Text.Trim());
             string reportingOffName = textboxReportingOff.Text.Trim();
             Role priRole = _employee.PriRole;
@@ -126,6 +129,32 @@ namespace ExperimentTreeViewV2
                 this._employee.DummyStat = false;
                 this.textboxNodeName.Text = _oriEmployeeName;
                 this.textboxNodeName.Enabled = true;
+            }
+        }
+
+        private void textboxNodeSalary_TextChanged(object sender, EventArgs e)
+        {
+            buttonEdit.Enabled = true;
+            try
+            {
+                if (double.Parse(textboxNodeSalary.Text) > _parentSalary && this.textboxReportingOff.Text != "ROOT")
+                {
+                    buttonEdit.Enabled = false;
+                }
+            }
+            catch
+            {
+                buttonEdit.Enabled = false;
+                return;
+            }//End of try..catch
+        }
+
+        private void textboxNodeName_TextChanged(object sender, EventArgs e)
+        {
+            buttonEdit.Enabled = true;
+            if (this.textboxNodeName.Text == "")
+            {
+                buttonEdit.Enabled = false;
             }
         }
     }

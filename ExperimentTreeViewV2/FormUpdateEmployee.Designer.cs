@@ -79,6 +79,7 @@
             this.textboxNodeSalary.Name = "textboxNodeSalary";
             this.textboxNodeSalary.Size = new System.Drawing.Size(273, 31);
             this.textboxNodeSalary.TabIndex = 38;
+            this.textboxNodeSalary.TextChanged += new System.EventHandler(this.textboxNodeSalary_TextChanged);
             // 
             // buttonCancel
             // 
@@ -138,6 +139,7 @@
             this.textboxNodeName.Name = "textboxNodeName";
             this.textboxNodeName.Size = new System.Drawing.Size(273, 31);
             this.textboxNodeName.TabIndex = 32;
+            this.textboxNodeName.TextChanged += new System.EventHandler(this.textboxNodeName_TextChanged);
             // 
             // label3
             // 
