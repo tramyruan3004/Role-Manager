@@ -231,6 +231,7 @@ namespace ExperimentTreeViewV2
                     _dataManager.SaveEmployeeData();
                     FormSwapEmployee fsf = new FormSwapEmployee(_selectedNode, _dataManager);
                     fsf.ShowDialog();
+                    buttonLoad.PerformClick();
                 }
                 if (item.Text == "Edit employee role")
                 {

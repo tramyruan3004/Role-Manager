@@ -29,10 +29,9 @@ namespace ExperimentTreeViewV2
         {
             _dataManager.EmployeeTreeStructure.SwappingNodes(_selectedNode, _replacingNewNode);
             _dataManager.SaveEmployeeData();
-            _dataManager.LoadEmployeeData();
-            this.Close();
+            this.DialogResult = DialogResult.OK;
         }
-        
+
         private void FormSwapEmployee_Load(object sender, EventArgs e)
         {
             this.textboxSelectedNode.Text = _selectedNode.Text;

@@ -57,13 +57,13 @@ namespace ExperimentTreeViewV2
         }
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            if (this.textboxNodeName.Text != "" || (string)comboBoxRoles.SelectedItem != "Select the role")
+            if (this.textboxNodeName.Text != "" && comboBoxRoles.SelectedItem != null)
             {
                 this.NodeName = this.textboxNodeName.Text;
                 this.NodeSalary = Convert.ToDouble(this.textboxNodeSalary.Text);
                 this.NodeDummyStat = this._nodeDummyStat;
                 MessageBox.Show("Employee has been added!");
-                this.Close();
+                this.DialogResult = DialogResult.OK;
             }
             else
             {
@@ -71,7 +71,7 @@ namespace ExperimentTreeViewV2
                 {
                     MessageBox.Show("Please enter Employee Name!");
                 }
-                else if ((string)comboBoxRoles.SelectedItem != "Select the role")
+                else if (comboBoxRoles.SelectedItem == null)
                 {
                     MessageBox.Show("Please select Employee Role!");
                 }
@@ -80,7 +80,7 @@ namespace ExperimentTreeViewV2
 
         private void buttonCancel_Click(object sender, EventArgs e)
         {
-            this.Close();
+            this.DialogResult = DialogResult.Cancel;
         }
 
         private void comboBoxRoles_SelectedIndexChanged(object sender, EventArgs e)

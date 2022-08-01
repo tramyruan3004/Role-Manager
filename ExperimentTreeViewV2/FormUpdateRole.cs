@@ -41,13 +41,16 @@ namespace ExperimentTreeViewV2
 
         private void buttonOkay_Click(object sender, EventArgs e)
         {
-            string name = textboxRoleName.Text.Trim();
-            string uuid = textboxUUID.Text.Trim();
-            bool projectLeaderStat = checkBoxProjectLeader.Checked;
-            if (name != "")
+            if(textboxRoleName.Text != "")
             {
-                ModifyItemCallback(uuid,name,projectLeaderStat);
-                this.DialogResult = DialogResult.OK;
+                string name = textboxRoleName.Text.Trim();
+                string uuid = textboxUUID.Text.Trim();
+                bool projectLeaderStat = checkBoxProjectLeader.Checked;
+                if (name != "")
+                {
+                    ModifyItemCallback(uuid, name, projectLeaderStat);
+                    this.DialogResult = DialogResult.OK;
+                }
             }
         }
 

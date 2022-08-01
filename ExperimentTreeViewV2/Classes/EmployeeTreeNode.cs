@@ -66,17 +66,23 @@ namespace ExperimentTreeViewV2.Classes
                 int i = 0;
                 for (i = 0; i < this.ChildrenEmployeeNodes.Count; i++)
                 {
-
                     if (this.ChildrenEmployeeNodes[i].Employee.UUID == _selectNode.Employee.UUID)
                     {
-                        this.ChildrenEmployeeNodes[i] = _replacingNewNode;
-
-                        Debug.WriteLine("swapped selected node" + this.ChildrenEmployeeNodes[i]);
+                        this.ChildrenEmployeeNodes[i].Employee.Name = _replacingNewNode.Employee.Name;
+                        this.ChildrenEmployeeNodes[i].Employee.PriRole = _replacingNewNode.Employee.PriRole;
+                        this.ChildrenEmployeeNodes[i].Employee.Salary = _replacingNewNode.Employee.Salary;
+                        this.ChildrenEmployeeNodes[i].Employee.UUID = _replacingNewNode.Employee.UUID;
+                        this.ChildrenEmployeeNodes[i].Employee.SecRole = _replacingNewNode.Employee.SecRole;
+                        this.ChildrenEmployeeNodes[i].Employee.DummyStat = _replacingNewNode.Employee.DummyStat;
                     }
                     else if (this.ChildrenEmployeeNodes[i].Employee.UUID == _replacingNewNode.Employee.UUID)
                     {
-                        this.ChildrenEmployeeNodes[i] = _selectNode;
-                        Debug.WriteLine("swapped replacing node" + this.ChildrenEmployeeNodes[i]);
+                        this.ChildrenEmployeeNodes[i].Employee.Name = _selectNode.Employee.Name;
+                        this.ChildrenEmployeeNodes[i].Employee.PriRole = _selectNode.Employee.PriRole;
+                        this.ChildrenEmployeeNodes[i].Employee.Salary = _selectNode.Employee.Salary;
+                        this.ChildrenEmployeeNodes[i].Employee.UUID = _selectNode.Employee.UUID;
+                        this.ChildrenEmployeeNodes[i].Employee.SecRole = _selectNode.Employee.SecRole;
+                        this.ChildrenEmployeeNodes[i].Employee.DummyStat = _selectNode.Employee.DummyStat;
                     }
                     this.ChildrenEmployeeNodes[i].ParentEmployeeTreeNode = this;
                     this.ChildrenEmployeeNodes[i].SwappingNodes(_selectNode, _replacingNewNode);

@@ -25,6 +25,7 @@ namespace ExperimentTreeViewV2.Classes
             _name = name;
             _priRole = priRole;
             _salary = salary;
+            _dummyStat = dummyStat;
         } // end of constructor
         public Employee(string name, Role priRole, Role secRole, double salary, bool dummyStat)
         {

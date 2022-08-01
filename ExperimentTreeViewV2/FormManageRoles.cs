@@ -184,6 +184,7 @@ namespace ExperimentTreeViewV2
             {
                 this._addMenuItem.Enabled = false;
             }
+
         }
         
         private void buttonExpandAll_Click(object sender, EventArgs e)
@@ -209,6 +210,5 @@ namespace ExperimentTreeViewV2
             treeViewRole.ExpandAll();
             InitializeMenuTreeView();
         }
-
     }
 }

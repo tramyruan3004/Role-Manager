@@ -30,15 +30,17 @@ namespace ExperimentTreeViewV2
         }
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            this.NodeName = this.textboxNodeName.Text;
-            this.Close();
-            MessageBox.Show("Role has been added!");
+            if (textboxNodeName.Text != "")
+            {
+                this.NodeName = this.textboxNodeName.Text;
+                MessageBox.Show("Role has been added!");
+                this.DialogResult = DialogResult.OK;
+            }
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
         {
-            this.Close();
+            this.DialogResult = DialogResult.Cancel;
         }
-
     }
 }
