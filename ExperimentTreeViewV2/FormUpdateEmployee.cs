@@ -18,9 +18,9 @@ namespace ExperimentTreeViewV2
         private Employee _employee;
         private string _reportingOffName;
         private List<RoleTreeNode> _roleNodesList;
-        public delegate void ModifyItemDelegate(string uuid, string employeeName, double salary, string reportingOffName, Role priRole, bool dummyStat);
+        public delegate void ModifyItemDelegate(string uuid, string oriEmployeeName, string employeeName, double salary, string reportingOffName, Role priRole, Role secRole, bool dummyStat);
         public ModifyItemDelegate ModifyItemCallback;
-        public FormUpdateEmployee(string uuid, string employeeName, double salary, string reportingOffName, Role priRole, bool dummyStat)
+        public FormUpdateEmployee(string uuid, string employeeName, double salary, string reportingOffName, Role priRole, Role secRole, bool dummyStat)
         {
             InitializeComponent();
             this._employee = new Employee();
@@ -28,12 +28,13 @@ namespace ExperimentTreeViewV2
             this._employee.UUID = uuid;
             this._reportingOffName = reportingOffName;
             this._employee.PriRole = priRole;
+            this._employee.SecRole = secRole;
             this._employee.Salary = salary;
             this._employee.DummyStat = dummyStat;
             this._oriEmployeeName = employeeName;
 
         }
-    public FormUpdateEmployee(string uuid, string employeeName, double salary, string reportingOffName, Role priRole, List<RoleTreeNode> roleNodeList, bool dummyStat)
+    public FormUpdateEmployee(string uuid, string employeeName, double salary, string reportingOffName, Role priRole, Role secRole, List<RoleTreeNode> roleNodeList, bool dummyStat)
         {
             InitializeComponent();
             this.textboxNodeName.Enabled = false;
@@ -47,11 +48,13 @@ namespace ExperimentTreeViewV2
             this._employee.UUID = uuid;
             this._reportingOffName = reportingOffName;
             this._employee.PriRole = priRole;
+            this._employee.SecRole = secRole;
             this._employee.Salary = salary;
             this._employee.DummyStat = dummyStat;
             this._roleNodesList = roleNodeList;
+            this._oriEmployeeName = employeeName;
         }
-        
+
 
         private void FormUpdateEmployee_Load(object sender, EventArgs e)
         {
@@ -95,15 +98,17 @@ namespace ExperimentTreeViewV2
                     }
                 }//load the child nodes to a list first from the selected node
             }
+            string oriName = _oriEmployeeName;
             string name = textboxNodeName.Text.Trim();
             string uuid = textBoxUUID.Text.Trim();
             double salary = Convert.ToDouble(textboxNodeSalary.Text.Trim());
             string reportingOffName = textboxReportingOff.Text.Trim();
             Role priRole = _employee.PriRole;
+            Role secRole = _employee.SecRole;
             bool dummyStat = checkBoxDummy.Checked;
             if (name != "")
             {
-                ModifyItemCallback(uuid, name, salary, reportingOffName, priRole, dummyStat);
+                ModifyItemCallback(uuid, oriName, name, salary, reportingOffName, priRole, secRole, dummyStat);
                 this.DialogResult = DialogResult.OK;
             }
         }

@@ -70,7 +70,7 @@ namespace ExperimentTreeViewV2.Classes
                     }
                 }
             }
-            return false;
+            return true;
         }
         /* When you work on File IO operations, TreeNode class is [not serializable]                      */
         /* As a result the following three methods were defined to support the                              */

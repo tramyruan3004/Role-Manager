@@ -144,6 +144,10 @@ namespace ExperimentTreeViewV2
 
         private void buttonSearchForTeamAdd_Click(object sender, EventArgs e)
         {
+            treeViewEmployee.Nodes.Clear();
+            treeViewEmployee.Nodes.Add(_employeeDataManager.EmployeeTreeStructure);
+            treeViewEmployee.ExpandAll();
+
             comboBoxTeamLeaderAdd.Items.Clear();
             double inputProjectRevenue;
             inputProjectRevenue = Convert.ToDouble(this.textBoxRevenueAdd.Text);
@@ -184,6 +188,8 @@ namespace ExperimentTreeViewV2
             Debug.WriteLine(resultNodes[0]);
             Project newProj = new Project(projName, inputProjectRevenue, resultNodes[0].Employee);
             _projectList.Add(newProj); //display on the project form
+
+            //add to project property of the resultNodes
             if (!resultNodes[0].Employee.ProjectList.Contains(newProj))
             {
                 resultNodes[0].Employee.AddProject(newProj);

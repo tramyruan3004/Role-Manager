@@ -12,7 +12,7 @@ namespace ExperimentTreeViewV2.Classes
         private string _name; // Employee Name
         private Role _priRole;//Employee Role
         private Role _secRole;//Employee Role
-        private List<Project> _projectList = new List<Project>();
+        private Project _project;
         private double _salary;
         private EmployeeTreeNode _container; // References the RoleTreeNode object that contains the role
         private bool _dummyStat;
@@ -58,10 +58,10 @@ namespace ExperimentTreeViewV2.Classes
             get { return _secRole; }
             set { _secRole = value; }
         }//Employee Role
-        public List<Project> ProjectList
+        public Project Project
         {
-            get { return _projectList; }
-            set { _projectList = value; }
+            get { return _project; }
+            set { _project = value; }
         }
         public bool DummyStat
         {
@@ -78,16 +78,5 @@ namespace ExperimentTreeViewV2.Classes
             get { return _container; }
             set { _container = value; }
         }
-        //public void EditEmployee(string name, Role employeeRole, Project project, double salary)
-        //{
-        //    _name = name;
-        //    _employeeRole = employeeRole;
-        //    _project = project;
-        //    _salary = salary;
-        //}// End of EditEmployee method
-        public void AddProject(Project proj)
-        {
-            _projectList.Add(proj);
-        } // End of AddProject method
     }
 }

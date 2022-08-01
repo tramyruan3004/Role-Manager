@@ -89,17 +89,13 @@ namespace ExperimentTreeViewV2
                 this.textBoxSalary.Text = _selectedNode.Employee.Salary.ToString();
                 this.textBoxEmployeeRole.Text = _selectedNode.Employee.PriRole.Name;
                 this.checkBoxDummy.Checked = _selectedNode.Employee.DummyStat;
-                if (_selectedNode.Employee.ProjectList.Count == 0)
+                if (_selectedNode.Employee.Project == null)
                 {
                     this.textBoxProject.Text = "No project";
                 }
                 else
                 {
-                    this.textBoxProject.Text = null;
-                    foreach (Project proj in _selectedNode.Employee.ProjectList)
-                    {
-                        this.textBoxProject.Text += proj.Name;
-                    }
+                    this.textBoxProject.Text = _selectedNode.Employee.Project.Name;
                 }
 
             }
@@ -148,7 +144,7 @@ namespace ExperimentTreeViewV2
                         reportingOffName = _selectedNode.ParentEmployeeTreeNode.Employee.Name;
                     }
                     //fur stands for form update role (ran out of naming ideas)
-                    FormUpdateEmployee fur = new FormUpdateEmployee(employee.UUID, employee.Name, employee.Salary, reportingOffName, employee.PriRole, employee.DummyStat);
+                    FormUpdateEmployee fur = new FormUpdateEmployee(employee.UUID, employee.Name, employee.Salary, reportingOffName, employee.PriRole, employee.SecRole, employee.DummyStat);
                     fur.comboBoxRoles.Enabled = false;
                     fur.Text = "Edit_Employee_Details";
                     fur.ModifyItemCallback = new FormUpdateEmployee.ModifyItemDelegate(this.ModifyItemCallbackFn);
@@ -193,15 +189,13 @@ namespace ExperimentTreeViewV2
                 }
                 if (item.Text == "Remove employee")
                 {
-                    _dataManager.SaveEmployeeData();
-                    _dataManager.LoadEmployeeData();
-
                     if (_selectedNode.ChildrenEmployeeNodes.Count > 0)
                     {
                         var confirmResult = MessageBox.Show("The employee can only be removed if there are no subordinates, no assigned projects or if after removal will still remain a full team. Would you like to swap the employee with another first?"
                             , "Execute Employee Swap", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
                         if (confirmResult == DialogResult.OK)
                         {
+                            _dataManager.SaveEmployeeData();
                             FormSwapEmployee fsf = new FormSwapEmployee(_selectedNode, _dataManager);
                             fsf.ShowDialog();
                         }
@@ -217,14 +211,16 @@ namespace ExperimentTreeViewV2
                                      MessageBoxButtons.OKCancel);
                         if (confirmResult == DialogResult.OK)
                         {
+                            if (_selectedNode.Employee.SecRole != null)
+                            {
+                                List<EmployeeTreeNode> resultAnotherNode = new List<EmployeeTreeNode>();
+                                _dataManager.EmployeeTreeStructure.SearchRemainNodeByNodeName(_selectedNode.Employee.Name, _selectedNode.Employee.UUID, ref resultAnotherNode);
+                                resultAnotherNode[0].Employee.SecRole = null;
+                            }
                             _dataManager.EmployeeTreeStructure.DeleteEmployeeNode(_selectedNode.Employee.UUID);
-                            textboxConsole.Text = "yes";
-                        }
-                        else
-                        {
-                            textboxConsole.Text = "no";
                         }
                     }
+                    buttonLoad.PerformClick();
                 }
                 if (item.Text == "Swap employee")
                 {
@@ -255,7 +251,7 @@ namespace ExperimentTreeViewV2
                         reportingOffName = _selectedNode.ParentEmployeeTreeNode.Employee.Name;
                     }
                     //fur stands for form update role (ran out of naming ideas)
-                    FormUpdateEmployee fur = new FormUpdateEmployee(employee.UUID, employee.Name, employee.Salary, reportingOffName, employee.PriRole, roleNodesList, employee.DummyStat);
+                    FormUpdateEmployee fur = new FormUpdateEmployee(employee.UUID, employee.Name, employee.Salary, reportingOffName, employee.PriRole, employee.SecRole, roleNodesList, employee.DummyStat);
                     fur.ModifyItemCallback = new FormUpdateEmployee.ModifyItemDelegate(this.ModifyItemCallbackFn);
                     fur.ShowDialog();
                 }
@@ -279,8 +275,20 @@ namespace ExperimentTreeViewV2
             }
         }//end of contextMenu_ItemClicked
 
-        private void ModifyItemCallbackFn(string uuid, string employeeName, double salary, string reportingOffName, Role priRole, bool dummyStat)
+        private void ModifyItemCallbackFn(string uuid, string oriEmployeeName, string employeeName, double salary, string reportingOffName, Role priRole, Role secRole, bool dummyStat)
         {
+            if (secRole != null)
+            {
+                List<EmployeeTreeNode> resultAnotherNode = new List<EmployeeTreeNode>();
+                _dataManager.EmployeeTreeStructure.SearchRemainNodeByNodeName(oriEmployeeName, uuid, ref resultAnotherNode);
+                resultAnotherNode[0].Employee.Name = employeeName;
+                resultAnotherNode[0].Employee.Salary = salary;
+                resultAnotherNode[0].Employee.PriRole = secRole;
+                resultAnotherNode[0].Employee.SecRole = priRole;
+                resultAnotherNode[0].Employee.DummyStat = dummyStat;
+                resultAnotherNode[0].Text = employeeName + " - " + secRole.Name + ", " + priRole.Name  + " (S$" + salary + ")";
+            }
+
             List<EmployeeTreeNode> resultNodes = new List<EmployeeTreeNode>();
             //Find the RoleTreeNode object which has the role object containing the matching
             //UUID value.
@@ -291,7 +299,14 @@ namespace ExperimentTreeViewV2
             resultNodes[0].Employee.Salary = salary;
             resultNodes[0].Employee.PriRole = priRole;
             resultNodes[0].Employee.DummyStat = dummyStat;
-            resultNodes[0].Text = employeeName + " - " + priRole.Name + " (S$" + salary + ")";
+            if (secRole != null)
+            {
+                resultNodes[0].Text = employeeName + " - " + priRole.Name + ", " + secRole.Name + " (S$" + salary + ")";
+            }
+            else
+            {
+                resultNodes[0].Text = employeeName + " - " + priRole.Name + " (S$" + salary + ")";
+            }
 
         }//end of ModifyItemCallbackFn method
         private void AddSecRoleCallbackFn(string uuid, string employeeName, double salary, string reportingOffUUID, Role priRole, Role secRole, bool dummyStat)
@@ -305,10 +320,11 @@ namespace ExperimentTreeViewV2
             //UUID value.
             _dataManager.EmployeeTreeStructure.SearchByUUID(reportingOffUUID, ref resultParentNode);
             //By right, there should only be one RoleTreeNode object found. Therefore,
-            EmployeeTreeNode pNewNode = new EmployeeTreeNode(new Employee(employeeName, priRole, secRole, salary, dummyStat));
+            EmployeeTreeNode pNewNode = new EmployeeTreeNode(new Employee(employeeName, secRole, priRole, salary, dummyStat));
             if (!resultParentNode[0].ChildrenEmployeeNodes.Contains(pNewNode))
             {
                 resultParentNode[0].AddChildrenEmployeeNode(pNewNode);
+                pNewNode.Text = pNewNode.Employee.Name + " - " + pNewNode.Employee.SecRole.Name + ", " + pNewNode.Employee.PriRole.Name + " (S$" + pNewNode.Employee.Salary + ")";
                 treeViewEmployee.ExpandAll();
             }
         }//end of ModifyItemCallbackFn method

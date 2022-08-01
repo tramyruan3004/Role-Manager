@@ -91,7 +91,14 @@ namespace ExperimentTreeViewV2.Classes
         }//End of RebuildTreeNodes
         public void RebuildTreeNodes()
         {
-            this.Text = this.Employee.Name + " - " + this.Employee.PriRole.Name + " (S$" + this.Employee.Salary + ")";
+            if (this.Employee.SecRole == null)
+            {
+                this.Text = this.Employee.Name + " - " + this.Employee.PriRole.Name + " (S$" + this.Employee.Salary + ")";
+            }
+            else
+            {
+                this.Text = this.Employee.Name + " - " + this.Employee.PriRole.Name + ", " + this.Employee.SecRole.Name + " (S$" + this.Employee.Salary + ")";
+            }
             if (this.ChildrenEmployeeNodes.Count > 0)
             {
                 int i = 0;
@@ -234,7 +241,7 @@ namespace ExperimentTreeViewV2.Classes
         }
         public void ResetAllProject()
         {
-            List<Project> _projectList = new List<Project>();
+            Project _project = null;
             if (this.ChildrenEmployeeNodes.Count > 0)//Note: This if block may not be necessary at all. Though the logic works.
             {
                 int i = 0;
@@ -243,7 +250,7 @@ namespace ExperimentTreeViewV2.Classes
                     if (this.ChildrenEmployeeNodes[i] != null)
                     {  //Base case (Where the method code stops calling itself, 
                        //perform action and finally exit). This avoids infinite loop
-                        this.ChildrenEmployeeNodes[i].Employee.ProjectList = _projectList; 
+                        this.ChildrenEmployeeNodes[i].Employee.Project = _project; 
                         this.ChildrenEmployeeNodes[i].ResetAllProject();
                     }
                 }
@@ -331,5 +338,26 @@ namespace ExperimentTreeViewV2.Classes
                 }
             }
         }//End of SearchByUUID method
+        public void SearchRemainNodeByNodeName(string name, string uuid, ref List<EmployeeTreeNode> foundNodes)
+        {
+            if (this.ChildrenEmployeeNodes.Count > 0)//Note: This if block may not be necessary at all. Though the logic works.
+            {
+                int i = 0;
+                for (i = 0; i < this.ChildrenEmployeeNodes.Count; i++)
+                {
+                    if (this.ChildrenEmployeeNodes[i].Employee.Name == name && this.ChildrenEmployeeNodes[i].Employee.UUID != uuid)
+                    {  //Base case (Where the method code stops calling itself, 
+                       //perform action and finally exit). This avoids infinite loop
+
+                        foundNodes.Add(this.ChildrenEmployeeNodes[i]);
+                    }
+                    else
+                    { //Recursive case (where the method calls itself)
+                      //Each DepartmentNode type object has SearchDeleteById method
+                        this.ChildrenEmployeeNodes[i].SearchRemainNodeByNodeName(name, uuid, ref foundNodes);
+                    }
+                }
+            }
+        }//End of SearchRemainNodeByNodeName method
     }
 }
